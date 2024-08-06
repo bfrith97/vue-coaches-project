@@ -1,7 +1,4 @@
-<script>
-export default {
-    name: "NotFound"
-}
+<script setup>
 </script>
 
 <template>

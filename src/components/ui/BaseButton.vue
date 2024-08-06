@@ -1,7 +1,5 @@
-<script>
-export default {
-    name: "BaseButton",
-    props: {
+<script setup>
+    defineProps({
         mode: {
             type: String,
             required: false,
@@ -17,8 +15,7 @@ export default {
             required: false,
             default: '/'
         }
-    }
-}
+    });
 </script>
 
 <template>

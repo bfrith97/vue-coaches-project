@@ -1,19 +1,20 @@
-<script>
-export default {
-    name: "CoachItem",
-    props: ['id', 'firstName', 'lastName', 'rate', 'areas'],
-    computed: {
-        fullName() {
-            return this.firstName + ' ' + this.lastName;
-        },
-        coachContactLink() {
-            return this.$route.path + '/' + this.id + '/contact';
-        },
-        coachDetailsLink() {
-            return this.$route.path + '/' + this.id
-        }
-    }
-}
+<script setup>
+import {useRoute} from "vue-router";
+import {computed} from "vue";
+
+const route = useRoute();
+
+const props = defineProps(['id', 'firstName', 'lastName', 'rate', 'areas']);
+
+const fullName = computed(function () {
+    return props.firstName + ' ' + props.lastName;
+});
+const coachContactLink = computed(function () {
+    return route.path + '/' + props.id + '/contact';
+});
+const coachDetailsLink = computed(function () {
+    return route.path + '/' + props.id
+});
 </script>
 
 <template>

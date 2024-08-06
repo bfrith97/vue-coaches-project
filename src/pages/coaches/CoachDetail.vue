@@ -1,33 +1,33 @@
-<script>
-export default {
-    name: "CoachDetail",
-    props: ['id'],
-    data() {
-        return {
-            selectedCoach: null,
-        }
-    },
-    computed: {
-        fullName() {
-            return this.selectedCoach.firstName + ' ' + this.selectedCoach.lastName;
-        },
-        contactLink() {
-            return this.$route.path + '/' + this.id + '/contact';
-        },
-        areas() {
-            return this.selectedCoach.areas;
-        },
-        rate() {
-            return this.selectedCoach.hourlyRate;
-        },
-        description() {
-            return this.selectedCoach.description;
-        }
-    },
-    created() {
-        this.selectedCoach = this.$store.getters.coaches.find(coach => coach.id === this.id)
-    }
-}
+<script setup>
+import {ref, computed, toRefs} from "vue";
+import {useStore} from "vuex";
+import {useRoute} from "vue-router";
+
+const store = useStore();
+const route = useRoute();
+
+const props = defineProps(['id']);
+
+const {id} = toRefs(props);
+
+const selectedCoach = ref(null);
+selectedCoach.value = store.getters.coaches.find(coach => coach.id === id.value)
+
+const fullName = computed(function () {
+    return selectedCoach.value.firstName + ' ' + selectedCoach.value.lastName;
+});
+const contactLink = computed(function () {
+    return route.path + '/' + id + '/contact';
+});
+const areas = computed(function () {
+    return selectedCoach.value.areas;
+});
+const rate = computed(function () {
+    return selectedCoach.value.hourlyRate;
+});
+const description = computed(function () {
+    return selectedCoach.value.description;
+});
 </script>
 
 <template>

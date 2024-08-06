@@ -1,35 +1,36 @@
-<script>
-export default {
-    name: "ContactCoach",
-    data() {
-        return {
-            email: '',
-            message: '',
-            formIsValid: true,
-        }
-    },
-    methods: {
-        validateForm() {
-            if (this.email === '' || !this.email.includes('@') || this.message === '') {
-                return this.formIsValid = false;
-            }
-            return this.formIsValid = true;
-        },
-        submitForm() {
-            this.validateForm();
+<script setup>
+import {useRoute, useRouter} from "vue-router";
+import {useStore} from "vuex";
+import {ref} from "vue";
 
-            const formData = {
-                id: this.$route.params.id,
-                email: this.email,
-                message: this.message,
-            }
+const route = useRoute();
+const router = useRouter();
+const store = useStore();
 
-            if (this.formIsValid) {
-                this.$store.dispatch('addRequest', formData);
+const email = ref('');
+const message = ref('');
+const formIsValid = ref(true);
 
-                this.$router.replace('/coaches');
-            }
-        }
+function validateForm() {
+    if (email.value === '' || !email.value.includes('@') || message.value === '') {
+        return formIsValid.value = false;
+    }
+    return formIsValid.value = true;
+}
+
+function submitForm() {
+    this.validateForm();
+
+    const formData = {
+        id: route.params.id,
+        email: email.value,
+        message: message.value,
+    }
+
+    if (formIsValid.value) {
+        store.dispatch('addRequest', formData);
+
+        router.replace('/coaches');
     }
 }
 </script>

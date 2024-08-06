@@ -1,7 +1,4 @@
-<script>
-export default {
-    name: "BaseCard"
-}
+<script setup>
 </script>
 
 <template>

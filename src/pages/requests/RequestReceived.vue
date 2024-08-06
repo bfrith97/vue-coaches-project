@@ -1,41 +1,34 @@
-<script>
+<script setup>
 import RequestItem from "@/components/requests/RequestItem.vue";
+import {computed, ref} from "vue";
+import {useStore} from "vuex";
 
-export default {
-    name: "RequestReceived",
-    components: {RequestItem},
-    data() {
-        return {
-            isLoading: false,
-            error: null,
-        }
-    },
-    computed: {
-        receivedRequests() {
-            return this.$store.getters['requests']
-        },
-        hasRequests() {
-            return this.$store.getters['hasRequests']
-        }
-    },
-    methods: {
-        async loadRequests() {
-            this.isLoading = true;
-            try {
-                await this.$store.dispatch('fetchRequests');
-            } catch (error) {
-                this.error = error.message || 'Something failed!';
-            }
-            this.isLoading = false;
-        },
-        handleError() {
-            this.error = null;
-        }
-    },
-    created() {
-        this.loadRequests();
+const store = useStore();
+
+const isLoading = ref(false);
+const error = ref(null);
+const receivedRequests = computed(function () {
+    return store.getters['requests']
+});
+const hasRequests = computed(function () {
+    return store.getters['hasRequests']
+});
+
+async function loadRequests() {
+    isLoading.value = true;
+    try {
+        await store.dispatch('fetchRequests');
+    } catch (error) {
+        error.value = error.message || 'Something failed!';
     }
+    isLoading.value = false;
 }
+
+function handleError() {
+    error.value = null;
+}
+
+loadRequests();
 </script>
 
 <template>

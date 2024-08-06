@@ -1,15 +1,15 @@
-<script>
+<script setup>
 import CoachForm from "@/components/coaches/CoachForm.vue";
 
-export default {
-    name: "CoachRegistration",
-    components: {CoachForm},
-    methods: {
-        saveData(data) {
-            this.$store.dispatch('registerCoach', data);
-            this.$router.replace('/coaches');
-        }
-    }
+import {useStore} from "vuex";
+import {useRouter} from "vue-router";
+
+const store = useStore();
+const router = useRouter();
+
+function saveData(data) {
+    store.dispatch('registerCoach', data);
+    router.replace('/coaches');
 }
 </script>
 

@@ -1,3 +1,30 @@
+<script setup>
+defineProps({
+    show: {
+        type: Boolean,
+        required: true,
+    },
+    title: {
+        type: String,
+        required: false,
+    },
+    fixed: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+});
+
+const emit = defineEmits(['close']);
+
+function tryClose() {
+    if (this.fixed) {
+        return;
+    }
+    emit('close');
+}
+</script>
+
 <template>
     <teleport to="body">
         <div v-if="show" @click="tryClose" class="backdrop"></div>
@@ -20,35 +47,6 @@
         </transition>
     </teleport>
 </template>
-
-<script>
-export default {
-    props: {
-        show: {
-            type: Boolean,
-            required: true,
-        },
-        title: {
-            type: String,
-            required: false,
-        },
-        fixed: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-    },
-    emits: ['close'],
-    methods: {
-        tryClose() {
-            if (this.fixed) {
-                return;
-            }
-            this.$emit('close');
-        },
-    },
-};
-</script>
 
 <style scoped>
 .backdrop {

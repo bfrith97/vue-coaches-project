@@ -1,16 +1,15 @@
-<script>
-export default {
-    name: "TheHeader",
-    computed: {
-        isLoggedIn() {
-            return this.$store.getters.isAuthenticated;
-        }
-    },
-    methods: {
-        signOut() {
-            this.$store.dispatch('logout');
-        }
-    }
+<script setup>
+import {computed} from "vue";
+import {useStore} from "vuex";
+
+const store = useStore();
+
+const isLoggedIn = computed(function () {
+    return store.getters.isAuthenticated;
+});
+
+function signOut() {
+    store.dispatch('logout');
 }
 </script>
 

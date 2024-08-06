@@ -1,29 +1,24 @@
-<script>
-export default {
-    name: "CoachFilter",
-    emits: ['change-filter'],
-    data() {
-        return {
-            filters: {
-                frontend: true,
-                backend: true,
-                career: true,
-            }
-        }
-    },
-    methods: {
-        setFilter(event) {
-            const inputId = event.target.id;
-            const isActive = event.target.checked;
-            const updatedFilters = {
-                ...this.filters,
-                [inputId]: isActive
-            };
+<script setup>
+import {reactive} from 'vue';
 
-            this.filters = updatedFilters;
-            this.$emit('change-filter', updatedFilters);
-        }
-    }
+const emit = defineEmits(['change-filter']);
+
+const filters = reactive({
+    frontend: true,
+    backend: true,
+    career: true,
+})
+
+function setFilter(event) {
+    const inputId = event.target.id;
+    const isActive = event.target.checked;
+    const updatedFilters = {
+        ...filters.value,
+        [inputId]: isActive
+    };
+
+    filters.value = updatedFilters;
+    emit('change-filter', updatedFilters);
 }
 </script>
 
@@ -35,7 +30,7 @@ export default {
             <input type="checkbox" id="frontend" checked @change="setFilter"/>
         </span>
         <span class="filter-option">
-            <label for="backend">Front End</label>
+            <label for="backend">Back End</label>
             <input type="checkbox" id="backend" checked @change="setFilter"/>
         </span>
         <span class="filter-option">

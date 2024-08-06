@@ -1,84 +1,81 @@
-<script>
-export default {
-    name: "CoachForm",
-    emits: ['submit-form'],
-    data() {
-        return {
-            firstName: {
-                val: '',
-                isValid: true,
-            },
-            lastName: {
-                val: '',
-                isValid: true,
-            },
-            description: {
-                val: '',
-                isValid: true,
-            },
-            rate: {
-                val: null,
-                isValid: true,
-            },
-            areas: {
-                val: [],
-                isValid: true,
-            },
-            formIsValid: true,
-        }
-    },
-    methods: {
-        clearValidity(input) {
-            this[input].isValid = true;
-        },
-        validateForm() {
-            this.formIsValid = true;
+<script setup>
+import {reactive, ref} from "vue";
 
-            this.firstName.isValid = true;
-            this.lastName.isValid = true;
-            this.description.isValid = true;
-            this.rate.isValid = true;
-            this.areas.isValid = true;
+const emit = defineEmits(['submit-form']);
 
-            if (this.firstName.val === '') {
-                this.firstName.isValid = false;
-                this.formIsValid = false;
-            }
-            if (this.lastName.val === '') {
-                this.lastName.isValid = false;
-                this.formIsValid = false;
-            }
-            if (this.description.val === '') {
-                this.description.isValid = false;
-                this.formIsValid = false;
-            }
-            if (!this.rate.val || this.rate.val < 0) {
-                this.rate.isValid = false;
-                this.formIsValid = false;
-            }
-            if (this.areas.val.length === 0) {
-                this.areas.isValid = false;
-                this.formIsValid = false;
-            }
-        },
-        submitForm() {
-            this.validateForm();
+const firstName = reactive({
+    val: '',
+    isValid: true,
+});
+const lastName = reactive({
+    val: '',
+    isValid: true,
+});
+const description = reactive({
+    val: '',
+    isValid: true,
+});
+const rate = reactive({
+    val: null,
+    isValid: true,
+});
+const areas = reactive({
+    val: [],
+    isValid: true,
+});
+const formIsValid = ref(true);
 
-            if (!this.formIsValid) {
-                return;
-            }
+function clearValidity(input) {
+    this[input].isValid = true;
+}
 
-            const formData = {
-                first: this.firstName.val,
-                last: this.lastName.val,
-                desc: this.description.val,
-                rate: this.rate.val,
-                areas: this.areas.val,
-            }
+function validateForm() {
+    formIsValid.value = true;
 
-            this.$emit('submit-form', formData)
-        }
+    firstName.isValid = true;
+    lastName.isValid = true;
+    description.isValid = true;
+    rate.isValid = true;
+    areas.isValid = true;
+
+    if (firstName.val === '') {
+        firstName.isValid = false;
+        formIsValid.value = false;
     }
+    if (lastName.val === '') {
+        lastName.isValid = false;
+        formIsValid.value = false;
+    }
+    if (description.val === '') {
+        description.isValid = false;
+        formIsValid.value = false;
+    }
+    if (!rate.val || rate.val < 0) {
+        rate.isValid = false;
+        formIsValid.value = false;
+    }
+    if (areas.val.length === 0) {
+        areas.isValid = false;
+        formIsValid.value = false;
+    }
+}
+
+function submitForm() {
+    this.validateForm();
+
+    if (!this.formIsValid) {
+        return;
+    }
+
+    const formData = {
+        first: firstName.val,
+        last: lastName.val,
+        desc: description.val,
+        rate: rate.val,
+        areas: areas.val,
+    }
+
+    emit('submit-form', formData)
 }
 </script>
 
